@@ -2,6 +2,7 @@ import crypto from "crypto";
 
 /**
  * Generates a random string with the specified length and pattern
+ * @param prefix - The prefix to use in the generated string.
  * @param chars - The characters to use in the generated string.
  * @param length - The length of the string to generate.
  * @param isUnique - Whether the generated string should be unique.
@@ -9,6 +10,7 @@ import crypto from "crypto";
  * @returns The generated string.
  */
 export function randomValueGenerator(
+  prefix: string = "",
   chars: string,
   length: number,
   isUnique: boolean = false,
@@ -19,7 +21,7 @@ export function randomValueGenerator(
   }
 
   let characters = chars.split("");
-  let result = "";
+  let result = prefix;
 
   for (let i = 0; i < length; i++) {
     const randomBuffer = crypto.randomBytes(1);
