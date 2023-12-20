@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 
 /**
  * Generates a random string with the specified length and pattern
@@ -89,4 +89,35 @@ export function randomDate(
  */
 export function wait(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * ID types.
+ */
+export enum IDType {
+  INT = "int",
+  LONG = "long",
+  UUID = "uuid",
+  //TODO maybe later can add more ID types here
+}
+
+/**
+ * Generates a random ID of the specified type.
+ * @param type - The type of ID to generate.
+ * @returns The generated ID.
+ */
+export function generateRandomId(idType: IDType): string | number {
+  switch (idType) {
+    case IDType.INT:
+      //Generate a random integer between 0 and 1000
+      return Math.floor(Math.random() * 1000);
+    case IDType.LONG:
+      // Generate a random long integer between 0 and Number.MAX_SAFE_INTEGER
+      return Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER + 1));
+    case IDType.UUID:
+      // Generate a random UUID
+      return crypto.randomUUID();
+    default:
+      throw new Error(`Unsupported ID type: ${idType}`);
+  }
 }
