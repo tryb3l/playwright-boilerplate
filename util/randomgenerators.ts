@@ -105,6 +105,8 @@ export enum IDType {
  * Generates a random ID of the specified type.
  * @param type - The type of ID to generate.
  * @returns The generated ID.
+ * @throws An error if the ID type is invalid.
+ * https://nodejs.org/docs/latest-v14.x/api/crypto.html#crypto_crypto_randomuuid_options
  */
 export function generateRandomId(idType: IDType): string | number {
   switch (idType) {
