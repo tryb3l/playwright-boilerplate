@@ -123,3 +123,41 @@ export function generateRandomId(idType: IDType): string | number {
       throw new Error(`Unsupported ID type: ${idType}`);
   }
 }
+
+/**
+ * Waits for a response from a specific URL and returns the parsed response body.
+ * @param page - The Playwright Page object.
+ * @param url - The URL to wait for a response from.
+ * @returns The parsed response body.
+ * @throws An error if waiting for the response fails, the response is not successful, or parsing the response body fails.
+ */
+async function waitForResponse(page: Page, url: string): Promise<any> {
+  // Use the timeout from environment variables or default to 30 seconds
+  const timeout = process.env.TIMEOUT ? parseInt(process.env.TIMEOUT) : 30000;
+
+  let response: Response;
+  try {
+    // Wait for a response from the specified URL
+    response = await page.waitForResponse(response => response.url() === url, { timeout });
+  } catch (error) {
+    console.error(`Failed to wait for response from ${url}: ${error.message}`);
+    throw error;
+  }
+
+  // Check if the response was successful
+  if (!response.ok()) {
+    throw new Error(`Received bad response from ${url}: ${response.status()} ${response.statusText()}`);
+  }
+
+  let responseBody: any;
+  try {
+    // Parse the response body as JSON
+    responseBody = await response.json();
+  } catch (error) {
+    console.error(`Failed to parse response body from ${url}: ${error.message}`);
+    throw error;
+  }
+
+  // Return the parsed response body
+  return responseBody;
+}
