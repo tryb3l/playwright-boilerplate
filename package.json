@@ -2,7 +2,7 @@
   "name": "playwright-boilerplate",
   "version": "1.0.0",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=20"
   },
   "description": "Bolilerplate for playwright testing projects",
   "main": "index.js",
