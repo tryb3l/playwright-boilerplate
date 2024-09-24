@@ -2,7 +2,7 @@
   "name": "playwright-boilerplate",
   "version": "1.0.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "description": "Bolilerplate for playwright testing projects",
   "main": "index.js",
@@ -20,11 +20,7 @@
   },
   "homepage": "https://github.com/tryb3l/playwright-boilerplate#readme",
   "dependencies": {
-    "@types/node": "^20.10.5",
-    "playwright": "^1.40.1",
-    "typescript": "^5.3.3"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.40.1"
+    "@playwright/test": "^1.47.2",
+    "playwright": "^1.47.2"
   }
 }
