@@ -1,26 +1,35 @@
 "use strict";
 
-const { PlaywrightTestConfig } = require("@playwright/test");
+const {
+  commonSettings,
+  apiSettings,
+  e2eSettings,
+} = require("./global.config.cjs");
 
 const PlaywrightTestConfig = {
-  use: {
-    baseURL: "https://example.com",
-    screenshot: "only-on-failure",
-    video: "retain-on-failure",
-    trace: "on-first-retry",
-  },
+  globalSetup: require.resolve("./global-setup.cjs"),
+  globalTeardown: require.resolve("./global-teardown.cjs"),
+  use: commonSettings,
   projects: [
     {
-      name: "Chromium",
-      use: { browserName: "chromium" },
+      name: "API Tests",
+      testDir: "tests/api",
+      use: apiSettings,
     },
     {
-      name: "WebKit",
-      use: { browserName: "webkit" },
+      name: "E2E Tests - Chromium",
+      testDir: "tests/e2e",
+      use: e2eSettings.chromium,
     },
     {
-      name: "Firefox",
-      use: { browserName: "firefox" },
+      name: "E2E Tests - WebKit",
+      testDir: "tests/e2e",
+      use: e2eSettings.webkit,
+    },
+    {
+      name: "E2E Tests - Firefox",
+      testDir: "tests/e2e",
+      use: e2eSettings.firefox,
     },
   ],
 };
