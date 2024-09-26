@@ -1,13 +1,13 @@
-import { test, expect } from "@playwright/test";
-import { baseURL } from "../../playwright.config.ts";
+"use strict";
 
-test.describe.parallel("POST user tests", () => {
-  let getUsersResponseBody: any;
+const { test, expect } = require("@playwright/test");
+
+test.describe.parallel("POST /users API tests", () => {
+  let getUsersResponseBody;
 
   test.beforeEach(async ({ request }) => {
     // Arrange
-    // baseURL is defined in api.config.ts
-    const url = `${baseURL}/users?page=1`;
+    const url = `/users?page=1`;
 
     // Act
     const response = await request.get(url);
@@ -15,13 +15,12 @@ test.describe.parallel("POST user tests", () => {
     // Assert
     expect(response.status()).toBe(200);
 
-    getUsersResponseBody = JSON.parse(await response.text());
+    getUsersResponseBody = await response.json();
   });
 
-  test("POST user status 201", async ({ request }) => {
+  test("should create a new user with status 201", async ({ request }) => {
     // Arrange
-    // baseURL is defined in api.config.ts
-    const url = `${baseURL}/users`;
+    const url = `/users`;
 
     // Act
     const response = await request.post(url, {
@@ -37,20 +36,21 @@ test.describe.parallel("POST user tests", () => {
     // Assert
     expect(response.status()).toBe(201);
 
-    const responseBody = JSON.parse(await response.text());
+    const responseBody = await response.json();
     expect(responseBody.first_name).toBe("Andrew");
     expect(responseBody.last_name).toBe("Test");
     expect(responseBody.id).not.toBeUndefined();
     expect(responseBody.id).toBe(233);
     expect(responseBody.createdAt).not.toBeUndefined();
-    //write response body to console
+    // Write response body to console
     console.log(responseBody);
   });
 
-  test.skip("POST user status 400", async ({ request }) => {
+  test.skip("should return status 400 for invalid user data", async ({
+    request,
+  }) => {
     // Arrange
-    // baseURL is defined in api.config.ts
-    const url = `${baseURL}/users`;
+    const url = `/users`;
 
     // Act
     const response = await request.post(url, {
