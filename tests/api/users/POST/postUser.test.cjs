@@ -1,16 +1,17 @@
 "use strict";
 
-const { test, expect } = require("@playwright/test");
+const test = require("../../../../utils/fixtures/fixtures.cjs");
+const { expect } = require("@playwright/test");
 
 test.describe.parallel("POST /users API tests", () => {
   let getUsersResponseBody;
 
-  test.beforeEach(async ({ request }) => {
+  test.beforeEach(async ({ authenticatedRequest }) => {
     // Arrange
     const url = `/users?page=1`;
 
     // Act
-    const response = await request.get(url);
+    const response = await authenticatedRequest.get(url);
 
     // Assert
     expect(response.status()).toBe(200);
@@ -18,12 +19,14 @@ test.describe.parallel("POST /users API tests", () => {
     getUsersResponseBody = await response.json();
   });
 
-  test("should create a new user with status 201", async ({ request }) => {
+  test("should create a new user with status 201", async ({
+    authenticatedRequest,
+  }) => {
     // Arrange
     const url = `/users`;
 
     // Act
-    const response = await request.post(url, {
+    const response = await authenticatedRequest.post(url, {
       data: {
         email: "test.andrew@example.com",
         first_name: "Andrew",
@@ -47,13 +50,13 @@ test.describe.parallel("POST /users API tests", () => {
   });
 
   test.skip("should return status 400 for invalid user data", async ({
-    request,
+    authenticatedRequest,
   }) => {
     // Arrange
     const url = `/users`;
 
     // Act
-    const response = await request.post(url, {
+    const response = await authenticatedRequest.post(url, {
       data: {},
     });
 
